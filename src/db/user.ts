@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, Model } from 'sequelize'
 
 import { USER_ROLE } from '../utils/enums'
+import { ExerciseLogModel } from './exercise-log'
 
 export interface UserModel extends Model {
     id: number
@@ -10,6 +11,7 @@ export interface UserModel extends Model {
     email: string
     passwordHash: string
     role: USER_ROLE
+    ExerciseLogs?: ExerciseLogModel[]
 }
 
 export default (sequelize: Sequelize, modelName: string) => {
@@ -49,6 +51,12 @@ export default (sequelize: Sequelize, modelName: string) => {
             tableName: 'users'
         }
     )
+
+    UserModelCtor.associate = (models) => {
+        UserModelCtor.hasMany(models.ExerciseLog, {
+            foreignKey: 'exerciseId',
+        })
+    }
 
     return UserModelCtor
 }

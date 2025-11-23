@@ -5,6 +5,7 @@ import { sequelize } from './db'
 import ProgramRouter from './routes/programs'
 import ExerciseRouter from './routes/exercises'
 import UsersRouter from './routes/users'
+import ExerciseLogRouter from './routes/exercise-log'
 import AuthorizationMiddleware from "./middleware/authorization-middleware";
 import ErrorMiddleware from "./middleware/error-middleware";
 
@@ -16,6 +17,7 @@ app.use(AuthorizationMiddleware.authenticate)
 app.use('/programs', ProgramRouter())
 app.use('/exercise', ExerciseRouter())
 app.use("/user", UsersRouter())
+app.use("/exerciseLog", ExerciseLogRouter())
 app.use(ErrorMiddleware.handleError)
 
 const httpServer = http.createServer(app)
