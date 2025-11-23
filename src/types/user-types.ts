@@ -10,6 +10,6 @@ export interface User {
 }
 
 export interface UserLogin {
-    email: string;
+    username: string;
     password: string;
 }
