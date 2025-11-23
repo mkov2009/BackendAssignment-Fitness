@@ -6,6 +6,7 @@ import {
 import jwt from "jsonwebtoken";
 import {DecodedToken} from "../types/auth-types";
 import {UseCaseRoleMap} from "../config/role-config";
+import {NoTokenError, UnauthorizedError} from "../errors/auth-errors";
 
 class AuthorizationMiddleware {
     static authenticate(req: Request, res: Response, next: NextFunction) {
@@ -15,15 +16,13 @@ class AuthorizationMiddleware {
             const authHeader = req.headers.authorization;
             const token = authHeader && authHeader.split(' ')[1];
             if (!token) {
-                res.status(401).json({ message: 'Unauthorized: No token provided' });
-                return;
+                throw new NoTokenError();
             }
 
             const decodedToken = jwt.verify(token, "your_jwt_secret") as DecodedToken;
 
             if (!roleList.includes(decodedToken.role)) {
-                res.status(403).json({ message: 'Forbidden: You do not have access to this resource' });
-                return;
+                throw new UnauthorizedError({ userId: decodedToken.userId });
             }
         }
 

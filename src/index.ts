@@ -6,6 +6,7 @@ import ProgramRouter from './routes/programs'
 import ExerciseRouter from './routes/exercises'
 import UsersRouter from './routes/users'
 import AuthorizationMiddleware from "./middleware/authorization-middleware";
+import ErrorMiddleware from "./middleware/error-middleware";
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(AuthorizationMiddleware.authenticate)
 app.use('/programs', ProgramRouter())
 app.use('/exercises', ExerciseRouter())
 app.use("/user", UsersRouter())
+app.use(ErrorMiddleware.handleError)
 
 const httpServer = http.createServer(app)
 
