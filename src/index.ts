@@ -5,11 +5,13 @@ import { sequelize } from './db'
 import ProgramRouter from './routes/programs'
 import ExerciseRouter from './routes/exercises'
 import UsersRouter from './routes/users'
+import AuthorizationMiddleware from "./middleware/authorization-middleware";
 
 const app = express()
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(AuthorizationMiddleware.authenticate)
 app.use('/programs', ProgramRouter())
 app.use('/exercises', ExerciseRouter())
 app.use("/user", UsersRouter())
