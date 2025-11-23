@@ -2,16 +2,18 @@ import {NextFunction, Request, Response} from "express";
 import {models} from "../../db";
 const { User } = models
 import { DoesNotExistError } from "../../errors/user-errors";
+import {UpdateUserSchema} from "../../validations/user-validations";
 
 class UpdateUser {
     async update(req: Request, res: Response, _next: NextFunction): Promise<any> {
-        const user = await User.findByPk(req.params.id);
+        const input = UpdateUserSchema.parse(req.body);
+        const user = await User.findByPk(input.id);
         if (!user) {
-            throw new DoesNotExistError({ id: req.params.id });
+            throw new DoesNotExistError({ id: input.id });
         }
 
-        const updatedUser = await User.update({ ...user, ...req.body }, {
-            where: { id: req.params.id },
+        const updatedUser = await User.update({ ...user, ...input }, {
+            where: { id: input.id },
             returning: true,
         })
         return res.json({

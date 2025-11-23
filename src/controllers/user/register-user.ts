@@ -3,12 +3,13 @@ import bcrypt from "bcryptjs";
 import {UserModel} from "../../db/user";
 import {models} from "../../db";
 import {User} from "../../types/user-types";
+import {RegisterUserSchema} from "../../validations/user-validations";
 const {User} = models
 
 
 class RegisterUser {
     async register(req: Request, res: Response, _next: NextFunction): Promise<any> {
-        const { password, ...user }: User = req.body;
+        const { password, ...user }: User = RegisterUserSchema.parse(req.body);
 
         const hashedPassword: string = await bcrypt.hash(password, 10);
 

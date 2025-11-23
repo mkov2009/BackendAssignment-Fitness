@@ -5,11 +5,12 @@ import {UserLogin} from "../../types/user-types";
 import {models} from "../../db";
 import jwt from "jsonwebtoken";
 import {InvalidCredentialsError} from "../../errors/user-errors";
+import {LoginUserSchema} from "../../validations/user-validations";
 const {User} = models;
 
 class LoginUser {
     async login(req: Request, res: Response, _next: NextFunction): Promise<any> {
-        const login: UserLogin = req.body;
+        const login: UserLogin = LoginUserSchema.parse(req.body);
 
         const user: UserModel = await User.findOne({ where: { email: login.username } });
         if (!user) {

@@ -2,12 +2,14 @@ import {NextFunction, Request, Response} from "express";
 import {models} from "../../db";
 import {DoesNotExistError} from "../../errors/user-errors";
 import {USER_ROLE} from "../../utils/enums";
+import {GetUsersSchema} from "../../validations/user-validations";
 const {User, ExerciseLog, Exercise} = models;
 
 
 class GetUser {
     async get(req: Request, res: Response, _next: NextFunction): Promise<any> {
-        let userId = req.body.id || req.user.id;
+        const input = GetUsersSchema.parse(req.body);
+        let userId = input.id || req.user.id;
         if (req.user.role === USER_ROLE.USER) {
             userId = req.user.id;
         }
