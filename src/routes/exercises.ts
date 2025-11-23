@@ -1,27 +1,16 @@
-import { Router, Request, Response, NextFunction } from 'express'
-
-import { models } from '../db'
+import { Router } from 'express'
+import CreateExercise from "../controllers/exercise/create-exercise";
+import DeleteExercise from "../controllers/exercise/delete-exercise";
+import ListExercise from "../controllers/exercise/list-exercise";
+import UpdateExercise from "../controllers/exercise/update-exercise";
 
 const router = Router()
 
-const {
-	Exercise,
-	Program
-} = models
-
 export default () => {
-	router.get('/', async (_req: Request, res: Response, _next: NextFunction): Promise<any> => {
-		const exercises = await Exercise.findAll({
-			include: [{
-				model: Program
-			}]
-		})
-
-		return res.json({
-			data: exercises,
-			message: 'List of exercises'
-		})
-	})
+	router.get('/', ListExercise.list);
+	router.post('/create', CreateExercise.create);
+	router.post("/update", UpdateExercise.update);
+	router.post('/delete', DeleteExercise.delete);
 
 	return router
 }

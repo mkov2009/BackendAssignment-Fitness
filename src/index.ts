@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(AuthorizationMiddleware.authenticate)
 app.use('/programs', ProgramRouter())
-app.use('/exercises', ExerciseRouter())
+app.use('/exercise', ExerciseRouter())
 app.use("/user", UsersRouter())
 app.use(ErrorMiddleware.handleError)
 
