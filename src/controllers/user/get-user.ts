@@ -7,11 +7,12 @@ const {User, ExerciseLog, Exercise} = models;
 
 class GetUser {
     async get(req: Request, res: Response, _next: NextFunction): Promise<any> {
+        let userId = req.body.id || req.user.id;
         if (req.user.role === USER_ROLE.USER) {
-            return await getUser(req.user.id, res);
+            userId = req.user.id;
         }
 
-        return await getUser(req.body.id, res);
+        return await getUser(userId, res);
     }
 
 }
