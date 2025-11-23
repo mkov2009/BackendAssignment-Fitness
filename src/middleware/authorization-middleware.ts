@@ -19,11 +19,13 @@ class AuthorizationMiddleware {
                 throw new NoTokenError();
             }
 
-            const decodedToken = jwt.verify(token, "your_jwt_secret") as DecodedToken;
+            const { userId, role } = jwt.verify(token, "your_jwt_secret") as DecodedToken;
 
-            if (!roleList.includes(decodedToken.role)) {
-                throw new UnauthorizedError({ userId: decodedToken.userId });
+            if (!roleList.includes(role)) {
+                throw new UnauthorizedError({ userId });
             }
+            // Attach decoded token to request object for further use
+            (req as any).user = { id: userId, role };
         }
 
         next();
