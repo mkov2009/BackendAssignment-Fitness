@@ -4,6 +4,7 @@ import {UserModel} from "../../db/user";
 import {UserLogin} from "../../types/user-types";
 import {models} from "../../db";
 import jwt from "jsonwebtoken";
+import {InvalidCredentialsError} from "../../errors/user-errors";
 const {User} = models;
 
 class LoginUser {
@@ -12,12 +13,12 @@ class LoginUser {
 
         const user: UserModel = await User.findOne({ where: { email: login.username } });
         if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            throw new InvalidCredentialsError();
         }
 
         const isPasswordValid: boolean = await bcrypt.compare(login.password, user.passwordHash);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            throw new InvalidCredentialsError();
         }
 
         // TODO add authentication config with secret key and options
