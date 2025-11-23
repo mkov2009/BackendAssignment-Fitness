@@ -6,7 +6,7 @@ const router = Router()
 
 export default () => {
     router.post('/create', CreateExerciseLog.create);
-    router.post('/logExercise/delete', DeleteExerciseLog.delete);
+    router.post('/delete', DeleteExerciseLog.delete);
 
     return router
 }

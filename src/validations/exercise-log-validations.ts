@@ -8,5 +8,5 @@ export const CreateExerciseLogSchema = z.object({
 
 export const DeleteExerciseLogSchema = z.object({
     exerciseId: z.number(),
-    datetime: z.date(),
+    datetime: z.coerce.date(),
 });
